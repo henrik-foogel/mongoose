@@ -4,14 +4,8 @@ let Schema = mongoose.Schema;
 
 // Skapa ett schema
 let ticketSchema = new Schema({
-    code: {
-        type: [String, 'Koden måste vara en sträng, ditt pundhuvud'],
-        required: [true, 'Du din jävel, du måste ha en kod för fan!']
-    },
-    event: {
-        type: [Object, 'ditt pundhuvud'],
-        required: [true, 'Du din jävel']
-    },
+    code: String,
+    event: Object,
     used: {
         type: [Boolean, 'ditt booleanhuvud'],
         default: false

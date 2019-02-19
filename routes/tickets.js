@@ -23,7 +23,8 @@ module.exports.post = async (req, res, next) => {
         }
         
         // write ticket to mongo
-        let resp = Ticket.create(tickets);
+        let resp = await Ticket.create(tickets);
+        console.log(resp)
 
         // return tickets 
         res.status(200).send(resp);
@@ -34,17 +35,16 @@ module.exports.post = async (req, res, next) => {
 
 // GET
 module.exports.get = async (req, res) => {
-
+    
     try {
 
-        let tickets = await Ticket.find({});
-
-        res.status(200).send(tickets)
-
-    } catch (err) {
-        res.status(500).send(err);
+        res.status(200).send( await Ticket.find({}) );        
+    
+    } catch(err){
+    
+        res.status(500).send(err.stack);
+    
     }
-
 }
 
 //uid
