@@ -13,7 +13,11 @@ let eventSchema = new Schema({
         month: String,
         day: String
     },
-    price: Number
+    price: Number,
+    tickets: {
+        available: Number,
+        sold: Number
+    }
 });
 
 let Event = mongoose.model('event', eventSchema);

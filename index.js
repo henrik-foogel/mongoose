@@ -23,7 +23,7 @@ app.use(cors());
 
 app.route('/events')
 .get(events.get)
-//.post(events.post)
+.post(events.post)
 
 app.route('/tickets')
 .post(tickets.post)

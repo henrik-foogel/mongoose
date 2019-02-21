@@ -12,3 +12,11 @@ module.exports.get = async (req, res) => {
     }
 
 }
+
+module.exports.post = async (req, res) => {
+    try {
+        res.status(200).send( await Event.create(req.body));
+    } catch(err) {
+        res.status(500).send(err.stack);
+    }
+}

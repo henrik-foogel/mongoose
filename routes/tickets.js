@@ -8,26 +8,47 @@ module.exports.post = async (req, res, next) => {
 
     try{
 
+
+
         let event = await Event.findById(req.body.event);
 
-        let tickets = [];
+        if(event.tickets.available >= event.tickets.sold + req.body.amount) {
 
-        for(i = 0; i<req.body.amount; i++) {
-            let ticket = {
-                code: uid(5),
-                event: event,
-                used: false
+            let newSold = event.tickets.sold + req.body.amount
+            let newAvailable = event.tickets.available - req.body.amount
+
+            await Event.findOneAndUpdate({_id: req.body.event}, {
+                tickets: {
+                    sold: newSold,
+                    available: newAvailable
+                }
+            })
+
+            let tickets = [];
+
+            for(i = 0; i<req.body.amount; i++) {
+                let ticket = {
+                    code: uid(5),
+                    event: event,
+                    used: false
+                }
+
+                tickets.push(ticket);
             }
+            
+            // write ticket to mongo
+            let resp = await Ticket.create(tickets);
+            console.log(resp)
 
-            tickets.push(ticket);
+            // return tickets 
+            res.status(200).send(resp);
+
+        } else {
+            console.info('all tickets are sold')
+            res.status(200).send('all tickets are sold')
         }
-        
-        // write ticket to mongo
-        let resp = await Ticket.create(tickets);
-        console.log(resp)
 
-        // return tickets 
-        res.status(200).send(resp);
+        
     } catch(err) {
         res.status(500).send(err.stack)
     }
