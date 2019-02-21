@@ -8,8 +8,6 @@ module.exports.post = async (req, res, next) => {
 
     try{
 
-
-
         let event = await Event.findById(req.body.event);
 
         if(event.tickets.available >= event.tickets.sold + req.body.amount) {
